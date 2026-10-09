@@ -21,7 +21,8 @@ It features a simple interface for authentication via user-token and configuring
 - C++ compiler supporting C++20
 - [CMake](https://cmake.org/download/)
 - [Git](https://git-scm.com/)
-- Required dependencies are automatically fetched by CMake during configuration
+> [!NOTE]
+> Required dependencies are automatically fetched by CMake during configuration
 
 ### Instructions
 1. Clone the repository
