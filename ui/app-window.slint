@@ -1,0 +1,133 @@
+import {
+    Button,
+    VerticalBox,
+    LineEdit,
+    HorizontalBox,
+} from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in-out property <string> token;
+    in-out property <string> username: "";
+    in-out property <bool> logged-in: false;
+    callback login(string);
+
+    in-out property <string> channel-id: "";
+    in-out property <string> user-id: "";
+    in-out property <bool> running: false;
+    in-out property <string> listener-status: "";
+
+    callback start-sobbing(string, string);
+    callback stop-sobbing();
+
+    width: 475px;
+    height: 270px;
+
+    if !root.logged_in: VerticalLayout {
+        spacing: 12px;
+        alignment: center;
+
+        HorizontalLayout {
+            alignment: center;
+            Text {
+                text: "Log into Discord";
+                font-size: 32px;
+            }
+        }
+
+        HorizontalLayout {
+            alignment: center;
+            LineEdit {
+                width: 400px;
+                height: 30px;
+                input-type: password;
+                text <=> root.token;
+                placeholder-text: "Enter Discord bot token here";
+            }
+        }
+
+        HorizontalLayout {
+            alignment: center;
+            Button {
+                width: 400px;
+                height: 30px;
+                text: "Login";
+
+                clicked => {
+                    root.login(root.token);
+                }
+            }
+        }
+
+        HorizontalLayout {
+            alignment: center;
+            Text {
+                width: 440px;
+                text: root.listener-status;
+            }
+        }
+    }
+
+    if root.logged_in: VerticalLayout {
+        spacing: 4px;
+        alignment: center;
+
+        HorizontalBox {
+            alignment: center;
+            Text {
+                text: "Logged in as " + username;
+            }
+        }
+
+        HorizontalBox {
+            alignment: center;
+            LineEdit {
+                width: 400px;
+                height: 40px;
+                text <=> root.channel-id;
+                placeholder-text: "Channel ID * (Required)";
+            }
+        }
+
+        HorizontalBox {
+            alignment: center;
+            LineEdit {
+                width: 400px;
+                height: 40px;
+                text <=> root.user-id;
+                placeholder-text: "User ID (Optional)";
+            }
+        }
+
+        HorizontalBox {
+            alignment: center;
+            Button {
+                width: 400px;
+                height: 40px;
+                text: root.running ? "Stop Auto Sobbing" : "Start Auto Sobbing";
+                clicked => {
+                    if root.running {
+                        root.stop-sobbing();
+                    } else {
+                        root.start-sobbing(root.channel-id, root.user-id)
+                    }
+                }
+            }
+        }
+
+        HorizontalBox {
+            alignment: center;
+            Text {
+                width: 440px;
+                text: root.listener-status;
+            }
+        }
+
+        HorizontalBox {
+            alignment: center;
+            Text {
+                text: "Open multiple processes to use multiple User IDs/Channel IDs.";
+            }
+        }
+    
+    }
+}
